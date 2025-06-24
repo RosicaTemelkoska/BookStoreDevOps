@@ -12,6 +12,8 @@
         <PackageReference Include="Constructs" Version="10.1.*" />
 
         <PackageReference Include="Amazon.Jsii.Analyzers" Version="*" PrivateAssets="all" />
+
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0" />
         
     </ItemGroup>
 

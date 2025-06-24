@@ -8,7 +8,8 @@ namespace Bookstore.Web.Startup
     {
         public static WebApplicationBuilder ConfigureConfiguration(this WebApplicationBuilder builder)
         {
-            if (!builder.Environment.IsDevelopment())
+            // Вклучи AWS само ако не си Development И environment е Production
+            if (!builder.Environment.IsDevelopment() && builder.Environment.IsProduction())
             {
                 builder.Configuration.AddSystemsManager("/BobsBookstore/");
             }

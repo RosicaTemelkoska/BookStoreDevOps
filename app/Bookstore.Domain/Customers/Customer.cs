@@ -1,8 +1,10 @@
-﻿namespace Bookstore.Domain.Customers
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Bookstore.Domain.Customers
 {
     public class Customer : Entity
     {
-        public string Sub { get; set; }
+        public string? Sub { get; set; }
 
         public string? Username { get; set; }
 
@@ -17,5 +19,9 @@
         public DateTime? DateOfBirth { get; set; }
 
         public string? Phone { get; set; }
+
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }
+
     }
 }

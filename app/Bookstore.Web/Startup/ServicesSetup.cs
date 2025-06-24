@@ -13,6 +13,8 @@ using System.Text.Json;
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Amazon.Extensions.NETCore.Setup;
+
 
 namespace Bookstore.Web.Startup
 {
@@ -31,7 +33,7 @@ namespace Bookstore.Web.Startup
             builder.Services.AddAWSService<IAmazonRekognition>();
 
             var connString = GetDatabaseConnectionString(builder.Configuration);
-            builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(connString));
+            builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddSession();
 
             return builder;
@@ -49,10 +51,17 @@ namespace Bookstore.Web.Startup
             // the secret.
             const string DbSecretsParameterName = "dbsecretsname";
 
-            var connString = configuration.GetConnectionString("BookstoreDbDefaultConnection");
+            var connString = configuration.GetConnectionString("DefaultConnection");
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+           // Console.WriteLine($"ENVIRONMENT: {env}");
+            //Console.WriteLine($"connString from config: {connString}");
+
             if (!string.IsNullOrEmpty(connString))
             {
                 Console.WriteLine("Using localdb connection string");
+                Console.WriteLine($"📡 Final connection string: {connString}");
+
                 return connString;
             }
 

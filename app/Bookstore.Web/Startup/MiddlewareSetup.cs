@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Threading.Tasks;
 
 namespace Bookstore.Web.Startup
@@ -47,8 +48,27 @@ namespace Bookstore.Web.Startup
             // Create the database
             using (var scope = app.Services.CreateAsyncScope())
             {
-                await scope.ServiceProvider.GetService<ApplicationDbContext>()!.Database.EnsureCreatedAsync();
+                var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+                if (dbContext == null)
+                {
+                    Console.WriteLine("❌ ApplicationDbContext е null. Провери дали е регистриран во ConfigureServices.");
+                }
+                else
+                {
+                    try
+                    {
+                        Console.WriteLine("⏳ Pokušuvam EnsureCreatedAsync...");
+                        await dbContext.Database.EnsureCreatedAsync();
+                        Console.WriteLine("✅ Database ensured.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"❌ Грешка при EnsureCreatedAsync: {ex.Message}");
+                    }
+                }
             }
+
 
             return app;
         }

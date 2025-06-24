@@ -22,7 +22,7 @@ namespace Bookstore.Domain.Orders
 
         public IEnumerable<OrderItem> OrderItems => orderItems;
 
-        public DateTime DeliveryDate { get; set; } = DateTime.Now.AddDays(7);
+        public DateTime DeliveryDate { get; set; } = DateTime.UtcNow;
 
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
 
